@@ -1,0 +1,3 @@
+/Users/taospa/CLionProjects/takuzu/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/taospa/CLionProjects/takuzu/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/taospa/CLionProjects/takuzu/cmake-build-debug/CMakeFiles/takuzu.dir
