@@ -8,6 +8,6 @@
 
 GRID create_takuzu(int size);
 void display_grid(GRID grid);
-int validity_move(int **grid, int size, MOVE move);
+int validity_move(GRID grid, MOVE move);
 
 #endif //TAKUZU_TAKUZU_H

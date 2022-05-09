@@ -16,20 +16,6 @@ typedef struct{
     int indice_y;
 }MOVE;
 
-GRID create_grid(int size){
-    GRID grid;
-    grid.size = size;
-    grid.tab = malloc(sizeof(int *) * size * size);
-    for(int i = 0; i < size; i++){
-        for(int j=0; j < size; j++){
-            grid.tab[i][j] = 0;
-            printf("%d", grid.tab[i][j]);
-        }
-        printf("\n");
-    }
-    return grid;
-}
-
 
 void display_grid(GRID grid){
     int i;
@@ -42,6 +28,21 @@ void display_grid(GRID grid){
     }
 }
 
-int validity_move(int **grid, int size, MOVE move){
+int validity_move(GRID grid, MOVE move){
 
+}
+
+/* function that creates a grid with the size of the user */
+GRID create_grid(int size){
+    GRID grid;
+    grid.size = size;
+    grid.tab = malloc(sizeof(int *) * size ^ 2);
+    for(int i = 0; i < size; i++){
+        for(int j=0; j < size; j++){
+            grid.tab[i][j] = 0;
+            printf("%d", grid.tab[i][j]);
+        }
+        printf("\n");
+    }
+    return grid;
 }
