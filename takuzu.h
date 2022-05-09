@@ -6,13 +6,8 @@
 #define TAKUZU_TAKUZU_H
 #include "takuzu.c"
 
-typedef struct
-{
-    int nb_row;
-    int nb_column;
-    int **tab;
-} GRID;
-
-int **create_grid(int size);
+GRID create_takuzu(int size);
+void display_grid(GRID grid);
+int validity_move(int **grid, int size, MOVE move);
 
 #endif //TAKUZU_TAKUZU_H

@@ -17,11 +17,7 @@ int main() {
         }
     } while (size != 4 && size != 6 && size != 8 && size != 10);
 
-    int **tab = create_grid(size);
-
-
-
-
-
+    GRID takuzu = create_grid(size);
+    display_grid(takuzu);
     return 0;
 }

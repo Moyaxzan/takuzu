@@ -4,35 +4,44 @@
 
 #include "takuzu.h"
 
-int **create_grid(int size){
-    int i;
-    int j;
-    int tab[size][size];
-    for(i = 0; i < size; i++){
-        for(j=0; j < size; j++){
-            tab[i][j] = 0;
-        }
-    }
-    return tab;
-}
+typedef struct
+{
+    int size;
+    int **tab;
+} GRID;
 
+typedef struct{
+    int value;
+    int indice_x;
+    int indice_y;
+}MOVE;
 
-int **create_takuzu(int** tab, int size){
+GRID create_grid(int size){
+    GRID grid;
+    grid.size = size;
+    grid.tab = malloc(sizeof(int *) * size * size);
     for(int i = 0; i < size; i++){
         for(int j=0; j < size; j++){
-
-        }
-    }
-    return tab;
-}
-
-void display_grid(int **grid, int size){
-    int i;
-    int j;
-    for(i = 0; i < size; i++){
-        for(j = 0; j < size; j++){
-            printf("%d ", grid[i][j]);
+            grid.tab[i][j] = 0;
+            printf("%d", grid.tab[i][j]);
         }
         printf("\n");
     }
+    return grid;
+}
+
+
+void display_grid(GRID grid){
+    int i;
+    int j;
+    for(i = 0; i < grid.size; i++){
+        for(j = 0; j < grid.size; j++){
+            printf("%d ", grid.tab[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int validity_move(int **grid, int size, MOVE move){
+
 }
