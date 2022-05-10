@@ -6,7 +6,7 @@
 #define TAKUZU_TAKUZU_H
 #include "takuzu.c"
 
-GRID create_takuzu(int size);
+GRID create_grid(int size);
 void display_grid(GRID grid);
 int validity_move(GRID grid, MOVE move);
 
