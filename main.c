@@ -8,10 +8,12 @@
 
 int main() {
     int size;
+    SOLUTION solution;
+    solution.grid->tab[4][4] = {{1, 0, 0, 1}, {1, 0, 0, 1}, {1, 0, 0, 1}, {1, 0, 0, 1} };
     printf("what size you want ? (4, 6, 8 or 10)\n");
     scanf("%d", &size);
     do {
-        if (size != 4 && size != 6 && size != 8 && size != 10) {
+        if (size != 4 && size != 8) {
             printf("wrong size, try again\n");
             scanf("%d", &size);
         }
