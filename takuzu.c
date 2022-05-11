@@ -18,7 +18,7 @@ int **create_grid(int size) {
 }
 
 
-void display_grid(int size,int solution[size][size], int mask[size][size]){
+void grid_game(int size,int solution[size][size], int mask[size][size]){
     int i;
     int j;
     for(i = 0; i < size; i++){
@@ -26,7 +26,7 @@ void display_grid(int size,int solution[size][size], int mask[size][size]){
             if(mask[i][j] == 1){
                 printf(" %d ", solution[i][j]);
             }else{
-                printf(" / ");
+                printf(" . ");
             }
         }
         printf("\n");
