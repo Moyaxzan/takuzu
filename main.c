@@ -91,6 +91,11 @@ int main() {
                 /*end case 1*/
             }
         }
+        char restart_char;
+        printf("do you want to restart (y/n)\n");
+        scanf("%s", &restart_char);
+        if (restart_char == 'n')
+            exit = 0;
     }
     return 0;
 }
