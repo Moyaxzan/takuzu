@@ -8,8 +8,7 @@
 
 int main() {
     int size;
-    SOLUTION solution;
-    solution.grid->tab[4][4] = {{1, 0, 0, 1}, {1, 0, 0, 1}, {1, 0, 0, 1}, {1, 0, 0, 1} };
+
     printf("what size you want ? (4, 6, 8 or 10)\n");
     scanf("%d", &size);
     do {
@@ -19,7 +18,28 @@ int main() {
         }
     } while (size != 4 && size != 6 && size != 8 && size != 10);
 
-    GRID takuzu = create_grid(size);
-    display_grid(takuzu);
+    if (size == 4) {
+        int solution_tab[4][4] = {{1, 0, 0, 1},
+                                  {0, 1, 1, 0},
+                                  {0, 1, 0, 1},
+                                  {1, 0, 1, 0}};
+
+        int solution_mask[4][4] = {{0, 1, 1, 0},
+                                   {0, 0, 0, 0},
+                                   {0, 1, 1, 0},
+                                   {1, 0, 0, 0}};
+
+        display_grid(4, solution_tab, solution_mask);
+    }else{
+        int solution_tab[8][8] = {{1, 0, 0, 1},
+                                  {0, 1, 1, 0},
+                                  {0, 1, 0, 1},
+                                  {1, 0, 1, 0}};
+
+        int solution_mask[8][8] = {{0, 1, 1, 0, },
+                                   {0, 0, 0, 0},
+                                   {0, 1, 1, 0},
+                                   {1, 0, 0, 0}};
+    }
     return 0;
 }
