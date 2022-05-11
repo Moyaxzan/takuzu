@@ -78,7 +78,9 @@ int main() {
                                                                    {0, 0, 0, 0, 1, 0, 0, 0},
                                                                    {0, 1, 1, 1, 1, 1, 0, 0},
                                                                    {0, 1, 0, 1, 0, 0, 1, 0}};
-                                        grid_game(8, solution_tab, solution_mask);
+                                        int grid_game[size][size] = create_grid(size);
+                                        get_grid_game(size, solution_tab, solution_mask, grid_game);
+                                        display_grid(size, grid_game);
                                     }
                                 }
                                 break;

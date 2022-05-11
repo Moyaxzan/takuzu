@@ -7,7 +7,7 @@
 #include "takuzu.c"
 
 int **create_grid(int size);
-void grid_game(int size,int solution[size][size], int mask[size][size]);
+void display_grid(int size,int solution[size][size], int mask[size][size]);
 /*int validity_move(int **grid, int size, MOVE move);*/
 
 #endif //TAKUZU_TAKUZU_H

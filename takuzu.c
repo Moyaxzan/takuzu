@@ -18,13 +18,11 @@ int **create_grid(int size) {
 }
 
 
-void grid_game(int size,int solution[size][size], int mask[size][size]){
-    int i;
-    int j;
-    for(i = 0; i < size; i++){
-        for(j = 0; j < size; j++){
-            if(mask[i][j] == 1){
-                printf(" %d ", solution[i][j]);
+void display_grid(int size,int grid_game[size][size]){
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            if(grid_game[i][j] != -1){
+                printf(" %d ", grid_game[i][j]);
             }else{
                 printf(" . ");
             }
@@ -32,6 +30,21 @@ void grid_game(int size,int solution[size][size], int mask[size][size]){
         printf("\n");
     }
 }
+
+int get_grid_game(int size,int solution[size][size], int mask[size][size], int empty_grid[size][size]){
+    int i, j;
+    for(i = 0; i < size; i++){
+        for(j = 0; j < size; j++){
+            if(mask[i][j] == 1){
+                empty_grid[i][j] = solution[i][j];
+            }else{
+                empty_grid[i][j] = -1;
+            }
+        }
+    }
+    return **empty_grid;
+}
+
 /*
 int validity_move(GRID grid,MOVE move){
 
