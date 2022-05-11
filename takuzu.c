@@ -5,20 +5,19 @@
 #include "takuzu.h"
 
 
-/* function that create a grid with a given size initalized with 0 */
-int **create_grid(int size) {
-    int **grid = malloc(sizeof(int *) * size);
+int create_grid(int size) {
+   int **grid = malloc(sizeof(int *) * size);
     for (int i = 0; i < size; i++) {
         grid[i] = malloc(sizeof(int) * size);
         for (int j = 0; j < size; j++) {
             grid[i][j] = 0;
         }
     }
-    return grid;
+    return **grid;
 }
 
 
-void display_grid(int size,int grid_game[size][size]){
+void display_grid(int size, int grid_game[size][size]){
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
             if(grid_game[i][j] != -1){
@@ -30,6 +29,7 @@ void display_grid(int size,int grid_game[size][size]){
         printf("\n");
     }
 }
+
 
 int get_grid_game(int size,int solution[size][size], int mask[size][size], int empty_grid[size][size]){
     int i, j;
