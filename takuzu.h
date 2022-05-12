@@ -15,6 +15,7 @@ int check_equality_columns(int size, int grid_game[size][size]);
 int check_duplicate_rows(int size, int grid_game[size][size]);
 int check_duplicate_columns(int size, int grid_game[size][size]);
 int check_three_same_values(int size, int grid_game[size][size]);
+int Play();
 /*int validity_move(int **grid, int size, MOVE move);*/
 
 #endif //TAKUZU_TAKUZU_H
