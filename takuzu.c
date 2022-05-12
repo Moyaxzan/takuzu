@@ -213,3 +213,14 @@ int Play() {
 int validity_move(GRID grid,MOVE move){
 
 }*/
+
+/* function that copy the grid in a new grid */
+int copy_grid(int size, int grid_copy[size][size], int  grid[size][size]) {
+    int i, j;
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            grid_copy[i][j] = grid[i][j];
+        }
+    }
+    return **grid_copy;
+}
