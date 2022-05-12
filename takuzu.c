@@ -180,23 +180,36 @@ int check_duplicate_columns(int size, int** grid_game) {
 
 
 int check_three_same_values(int size, int** grid_game) {
-    for (int i = 0; i < size-1; i++) {
-        for(int j = i+1; j < size-1; j++) {
+    for (int i = 0; i < size-2; i++) {
+        for (int j = i + 1; j < size; j++) {
+
             if (grid_game[i][j] != -1) {
-                if (grid_game[i + 1][j] == grid_game[i][j]){
-                    if (grid_game[i + 2][j] == grid_game[i][j]){
-                        printf("There is a 3 same values on the line %d\n", i + 1);
-                        return 0;
-                    }
-                }
-                /*TODO:oui*/
-                if (grid_game[i][j + 1] == grid_game[i][j]) {
-                    if (grid_game[i][j + 2] == (grid_game[i][j])) {
-                        printf("There is a 3 same values on the column %d\n", i + 1);
+                printf("%d ", grid_game[i][j]);
+                if (grid_game[i + 1][j] == grid_game[i][j]) {
+                    printf("%d ", grid_game[i+1][j]);
+                    if (grid_game[i + 2][j] == grid_game[i][j]) {
+                        printf("%d ", grid_game[i+2][j]);
+                        printf("There are 3 same values in a row in the row %d\n", i + 1);
                         return 0;
                     }
                 }
             }
+        }
+    }
+    for (int j = 0; j < size-2; j++) {
+        for (int i = j + 1; i < size; i++) {
+
+            if (grid_game[i][j] != -1) {
+                /*TODO: make this work*/
+                if (grid_game[i][j + 1] == grid_game[i][j]) {
+                    if (grid_game[i][j + 2] == (grid_game[i][j])) {
+                        printf("There are 3 same values in a row in the column %d\n", i + 1);
+                        return 0;
+                    }
+                }
+
+            }
+
         }
     }
     return 1;
@@ -209,7 +222,8 @@ int verification(int size, int** grid_game) {
 }
 
 int Play() {
-    int size, exit, position_x, position_y, value;
+    int size, exit = 1, position_x, position_y, value, invalid_index = 1;
+
     printf("what size you want ? (4 or 8)\n");
     scanf("%d", &size);
     if (size == -1)
@@ -220,69 +234,78 @@ int Play() {
         if (size == -1)
             exit = 0;
     }
+
     int** not_tested_grid = NULL;
     int** grid_game = NULL;
+
     if (size == -1) {
         exit = 0;
     } else {
-        if (size == 4) {
-            grid_game = create_grid(size);
-            get_grid_game(size, grid_game);
-        } else {
-            grid_game = create_grid(size);
-            get_grid_game(size,grid_game);
-        }
+        grid_game = create_grid(size);
+        get_grid_game(size,grid_game);
+
         display_grid(size, grid_game);
+
+        /*TODO: while (exit or win) */
         while(exit) {
+            invalid_index = 1;
+            while (invalid_index){
+                printf("Write a position in which you want to play\n");
 
-            printf("Write a position in which you want to play\n");
-
-            printf("Enter the row index (Between 1 and %d)\n", size);
-            scanf("%d", &position_y);
-            if (position_y == -1) {
-                exit = 0;
-            }
-            while ((position_y < 1 || position_y > 8) && exit) {
-                printf("Enter a correct row index (Between 1 and %d)\n", size);
-                scanf("%d", &position_y);
-                if (position_y == -1)
-                    exit = 0;
-            }
-
-            /*TODO: while (exit or win) */
-            if (exit) {
-                printf("Enter the column index (Between 1 and %d)\n", size);
+                printf("Enter the row index (Between 1 and %d)\n", size);
                 scanf("%d", &position_x);
-                if (position_x == -1)
+                if (position_x == -1) {
                     exit = 0;
+                }
                 while ((position_x < 1 || position_x > 8) && exit) {
-                    printf("Enter a correct column index (Between 1 and %d)\n", size);
+                    printf("Enter a correct row index (Between 1 and %d)\n", size);
                     scanf("%d", &position_x);
                     if (position_x == -1)
                         exit = 0;
                 }
 
                 if (exit) {
+                    printf("Enter the column index (Between 1 and %d)\n", size);
+                    scanf("%d", &position_y);
+                    if (position_y == -1)
+                        exit = 0;
+                    while ((position_y < 1 || position_y > size) && exit) {
+                        printf("Enter a correct column index (Between 1 and %d)\n", size);
+                        scanf("%d", &position_y);
+                        if (position_y == -1)
+                            exit = 0;
+                    }
 
-                    printf("Do you want to play 0 or 1 ?\n");
+                    if (grid_game[position_x-1][position_y-1] == -1 && exit)
+                        invalid_index = 0;
+                    if (invalid_index)
+                        printf("invalid input : case already filled.\n\n");
+                }
+            }
+            if (exit) {
+
+                printf("Do you want to play 0 or 1 ?\n");
+                scanf("%d", &value);
+                if (value == -1)
+                    exit = 0;
+                while ((value != 0 && value != 1) && exit) {
+                    printf("Enter a correct value (1 or 0)\n");
                     scanf("%d", &value);
                     if (value == -1)
                         exit = 0;
-                    while ((value != 0 && value != 1) && exit) {
-                        printf("Enter a correct value (1 or 0)\n");
-                        scanf("%d", &value);
-                        if (value == -1)
-                            exit = 0;
-                    }
-                    not_tested_grid = copy_grid(size, grid_game);
-                    not_tested_grid[position_y - 1][position_x - 1] = value;
-                    if(verification(size, not_tested_grid))
-                        grid_game[position_y-1][position_x-1] = value;
-                    /*TODO: Check si le coup est bon oéoé*/
-                    display_grid(size, grid_game);
                 }
+                not_tested_grid = copy_grid(size, grid_game);
+                not_tested_grid[position_x - 1][position_y - 1] = value;
+                if(verification(size, not_tested_grid)){
 
+                    /*TODO:check if the move is in solution_tab*/
+                    grid_game[position_x-1][position_y-1] = value;
+
+                }
+                display_grid(size, grid_game);
             }
+
+
         }
     }
     return exit;
