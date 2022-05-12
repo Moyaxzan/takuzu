@@ -4,22 +4,32 @@
 
 #include "takuzu.h"
 
+/* function that copy the grid in a new grid */
+int** copy_grid(int size, int** grid) {
+    int **grid_copy = malloc(sizeof(int *) * size);
+    for (int i = 0; i < size; i++) {
+        grid_copy[i] = malloc(sizeof(int) * size);
+        for (int j = 0; j < size; j++) {
+            grid_copy[i][j] = grid[i][j];
+        }
+    }
+    return grid_copy;
+}
 
 
-
-int create_grid(int size) {
-   int **grid = malloc(sizeof(int *) * size);
+int** create_grid(int size) {
+    int **grid = malloc(sizeof(int *) * size);
     for (int i = 0; i < size; i++) {
         grid[i] = malloc(sizeof(int) * size);
         for (int j = 0; j < size; j++) {
             grid[i][j] = 0;
         }
     }
-    return **grid;
+    return grid;
 }
 
 
-void display_grid(int size, int grid_game[size][size]){
+void display_grid(int size, int** grid_game){
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
             if(grid_game[i][j] != -1){
@@ -33,83 +43,169 @@ void display_grid(int size, int grid_game[size][size]){
 }
 
 
-int get_grid_game(int size,int solution[size][size], int mask[size][size], int empty_grid[size][size]){
-    for(int i = 0; i < size; i++){
-        for(int j = 0; j < size; j++){
-            if(mask[i][j] == 1){
-                empty_grid[i][j] = solution[i][j];
-            }else{
-                empty_grid[i][j] = -1;
+int** get_grid_game(int size, int** empty_grid) {
+    if (size == 4) {
+        int solution_tab[4][4] = {{1, 0, 0, 1},
+                                  {0, 1, 1, 0},
+                                  {0, 1, 0, 1},
+                                  {1, 0, 1, 0}};
+
+        int solution_mask[4][4] = {{0, 1, 1, 0},
+                                   {0, 0, 0, 0},
+                                   {0, 1, 1, 0},
+                                   {1, 0, 0, 0}};
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                if(solution_mask[i][j] == 1){
+                    empty_grid[i][j] = solution_tab[i][j];
+                }else{
+                    empty_grid[i][j] = -1;
+                }
+            }
+        }
+    } else {
+
+        int solution_tab[8][8] = {{1, 0, 1, 1, 0, 1, 0, 0},
+                                  {1, 0, 1, 0, 1, 0, 0, 1},
+                                  {0, 1, 0, 1, 1, 0, 1, 0},
+                                  {0, 1, 0, 1, 0, 1, 1, 0},
+                                  {1, 0, 1, 0, 0, 1, 0, 1},
+                                  {0, 1, 1, 1, 1, 1, 1, 0},
+                                  {0, 0, 1, 1, 0, 1, 1, 0},
+                                  {1, 1, 0, 0, 1, 0, 0, 1}};
+
+        int solution_mask[8][8] = {{1, 0, 1, 1, 0, 1, 0, 1},
+                                   {0, 0, 1, 0, 0, 0, 0, 0},
+                                   {1, 0, 0, 0, 0, 0, 0, 1},
+                                   {1, 0, 1, 0, 0, 1, 1, 0},
+                                   {1, 0, 0, 0, 1, 0, 0, 1},
+                                   {0, 0, 0, 0, 1, 0, 0, 0},
+                                   {0, 1, 1, 1, 1, 1, 0, 0},
+                                   {0, 1, 0, 1, 0, 0, 1, 0}};
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                if(solution_mask[i][j] == 1){
+                    empty_grid[i][j] = solution_tab[i][j];
+                }else{
+                    empty_grid[i][j] = -1;
+                }
             }
         }
     }
-    return **empty_grid;
+
+    return empty_grid;
 }
 
 /* TODO : avoid les -1 */
 
-/*int verification(int size, int grid_game[size][size]) {}*/
 
-int check_equality_rows(int size, int grid_game[size][size]) {
+
+int check_equality_rows(int size, int** grid_game) {
+    int count_zero, count_one;
     for(int i = 0; i < size; i++){
-        int sum = 0;
+        count_zero = 0;
+        count_one = 0;
         for(int j = 0; j < size; j++) {
-            if (grid_game[i][j]!=-1)
-                sum += grid_game[i][j];
+            if (grid_game[i][j]==1)
+                count_one += 1;
+            else if (grid_game[i][j]==0)
+                count_zero += 1;
         }
-        if (sum != size/2)
+        if (count_one > size/2) {
+            printf("Be careful ! There is too much 1's on the row %d\n", i+1);
+            return 0;
+        } else if(count_zero > size/2){
+            printf("Be careful ! There is too much 0's on the row %d\n", i+1);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int check_equality_columns(int size, int** grid_game) {
+    int count_zero, count_one;
+    for(int i = 0; i < size; i++){
+        count_zero = 0;
+        count_one = 0;
+        for(int j = 0; j < size; j++) {
+            if (grid_game[i][j] == 1)
+                count_one += 1;
+            else if (grid_game[i][j] == 0)
+                count_zero += 1;
+        }
+        if (count_one > size/2) {
+            printf("Be careful ! There is too much 1's on the column %d\n", i+1);
+            return 0;
+        }else if(count_zero > size/2){
+            printf("Be careful ! There is too much 0's on the column %d\n", i+1);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+int compare_arrays(int size, int tab1[SIZE_M], int tab2[SIZE_M]) {
+    for (int i; i < size; i++) {
+        if (tab1[i]!=tab2[i])
             return 0;
     }
     return 1;
 }
 
-int check_equality_columns(int size, int grid_game[size][size]) {
-    for(int i = 0; i < size; i++){
-        int sum = 0;
-        for(int j = 0; j < size; j++) {
-            if (grid_game[j][i]!=-1)
-                sum += grid_game[j][i];
+/* Return 1 if there are duplicated rows */
+int check_duplicate_rows(int size, int** grid_game) {
+    for (int i = 0; i < size; i++) {
+        for(int j = i+1; j < size; j++) {
+            if (compare_arrays(size, grid_game[i], grid_game[j]))
+                return 1;
         }
-        if (sum != size/2)
-            return 0;
     }
-    return 1;
+    return 0;
 }
 
-int check_duplicate_rows(int size, int grid_game[size][size]) {
+
+
+/* Returns 1 if there are duplicated columns */
+int check_duplicate_columns(int size, int** grid_game) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
-                if (grid_game[i] != grid_game[j])
-                    return 0;
-            }
+            if (compare_arrays(size, grid_game[i], grid_game[j]))
+                return 1;
         }
-    return 1;
+    }
+    return 0;
 }
 
-int check_duplicate_columns(int size, int grid_game[size][size]) {
-    for (int i = 0; i < size; i++) {
-        for(int j = i+1; j < size; j++) {
-                if (grid_game[j] != grid_game[i])
-                    return 0;
-            }
-        }
-    return 1;
-}
 
-int check_three_same_values(int size, int grid_game[size][size]) {
-    for (int i = 0; i < size-2; i++) {
-        for(int j = i+1; j < size-2; j++) {
+
+int check_three_same_values(int size, int** grid_game) {
+    for (int i = 0; i < size-1; i++) {
+        for(int j = i+1; j < size-1; j++) {
             if (grid_game[i][j] != -1) {
-                if (grid_game[i + 1][j] == grid_game[i][j])
-                    if (grid_game[i + 2][j] == grid_game[i][j])
+                if (grid_game[i + 1][j] == grid_game[i][j]){
+                    if (grid_game[i + 2][j] == grid_game[i][j]){
+                        printf("There is a 3 same values on the line %d\n", i + 1);
                         return 0;
-                if (grid_game[i][j + 1] == grid_game[i][j])
-                    if (grid_game[i][j + 2] == (grid_game[i][j]))
+                    }
+                }
+                /*TODO:oui*/
+                if (grid_game[i][j + 1] == grid_game[i][j]) {
+                    if (grid_game[i][j + 2] == (grid_game[i][j])) {
+                        printf("There is a 3 same values on the column %d\n", i + 1);
                         return 0;
+                    }
+                }
             }
         }
     }
     return 1;
+}
+
+int verification(int size, int** grid_game) {
+    if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) && check_three_same_values(size, grid_game))
+        return 1;
+    return 0;
 }
 
 int Play() {
@@ -124,45 +220,20 @@ int Play() {
         if (size == -1)
             exit = 0;
     }
-    int grid_game[size][size];
+    int** not_tested_grid = NULL;
+    int** grid_game = NULL;
     if (size == -1) {
         exit = 0;
     } else {
         if (size == 4) {
-            int solution_tab[4][4] = {{1, 0, 0, 1},
-                                      {0, 1, 1, 0},
-                                      {0, 1, 0, 1},
-                                      {1, 0, 1, 0}};
-
-            int solution_mask[4][4] = {{0, 1, 1, 0},
-                                       {0, 0, 0, 0},
-                                       {0, 1, 1, 0},
-                                       {1, 0, 0, 0}};
-            grid_game[size][size] = create_grid(size);
-            get_grid_game(size, solution_tab, solution_mask, grid_game);
+            grid_game = create_grid(size);
+            get_grid_game(size, grid_game);
         } else {
-            int solution_tab[8][8] = {{1, 0, 1, 1, 0, 1, 0, 0},
-                                      {1, 0, 1, 0, 1, 0, 0, 1},
-                                      {0, 1, 0, 1, 1, 0, 1, 0},
-                                      {0, 1, 0, 1, 0, 1, 1, 0},
-                                      {1, 0, 1, 0, 0, 1, 0, 1},
-                                      {0, 1, 1, 1, 1, 1, 1, 0},
-                                      {0, 0, 1, 1, 0, 1, 1, 0},
-                                      {1, 1, 0, 0, 1, 0, 0, 1}};
-
-            int solution_mask[8][8] = {{1, 0, 1, 1, 0, 1, 0, 1},
-                                       {0, 0, 1, 0, 0, 0, 0, 0},
-                                       {1, 0, 0, 0, 0, 0, 0, 1},
-                                       {1, 0, 1, 0, 0, 1, 1, 0},
-                                       {1, 0, 0, 0, 1, 0, 0, 1},
-                                       {0, 0, 0, 0, 1, 0, 0, 0},
-                                       {0, 1, 1, 1, 1, 1, 0, 0},
-                                       {0, 1, 0, 1, 0, 0, 1, 0}};
-            grid_game[size][size] = create_grid(size);
-            get_grid_game(size, solution_tab, solution_mask, grid_game);
+            grid_game = create_grid(size);
+            get_grid_game(size,grid_game);
         }
-        if(exit) {
-            display_grid(size, grid_game);
+        display_grid(size, grid_game);
+        while(exit) {
 
             printf("Write a position in which you want to play\n");
 
@@ -177,6 +248,8 @@ int Play() {
                 if (position_y == -1)
                     exit = 0;
             }
+
+            /*TODO: while (exit or win) */
             if (exit) {
                 printf("Enter the column index (Between 1 and %d)\n", size);
                 scanf("%d", &position_x);
@@ -190,7 +263,8 @@ int Play() {
                 }
 
                 if (exit) {
-                    printf("Do you want to play 0 or 1 ?");
+
+                    printf("Do you want to play 0 or 1 ?\n");
                     scanf("%d", &value);
                     if (value == -1)
                         exit = 0;
@@ -200,9 +274,14 @@ int Play() {
                         if (value == -1)
                             exit = 0;
                     }
-                    grid_game[position_x][position_y] = value;
+                    not_tested_grid = copy_grid(size, grid_game);
+                    not_tested_grid[position_y - 1][position_x - 1] = value;
+                    if(verification(size, not_tested_grid))
+                        grid_game[position_y-1][position_x-1] = value;
                     /*TODO: Check si le coup est bon oéoé*/
+                    display_grid(size, grid_game);
                 }
+
             }
         }
     }
@@ -214,13 +293,4 @@ int validity_move(GRID grid,MOVE move){
 
 }*/
 
-/* function that copy the grid in a new grid */
-int copy_grid(int size, int grid_copy[size][size], int  grid[size][size]) {
-    int i, j;
-    for (i = 0; i < size; i++) {
-        for (j = 0; j < size; j++) {
-            grid_copy[i][j] = grid[i][j];
-        }
-    }
-    return **grid_copy;
-}
+
