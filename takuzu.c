@@ -221,8 +221,19 @@ int verification(int size, int** grid_game) {
     return 0;
 }
 
+/*function that checks if the grid is full*/
+int check_full_grid(int size, int** grid_game) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (grid_game[i][j] == -1)
+                return 0;
+        }
+    }
+    return 1;
+}
+
 int Play() {
-    int size, exit = 1, position_x, position_y, value, invalid_index = 1;
+    int size, exit = 1, position_x, position_y, value, invalid_index = 1, win = 0;
 
     printf("what size you want ? (4 or 8)\n");
     scanf("%d", &size);
@@ -247,7 +258,7 @@ int Play() {
         display_grid(size, grid_game);
 
         /*TODO: while (exit or win) */
-        while(exit) {
+        while(exit && !win) {
             invalid_index = 1;
             while (invalid_index){
                 printf("Write a position in which you want to play\n");
@@ -304,9 +315,11 @@ int Play() {
                 }
                 display_grid(size, grid_game);
             }
-
-
+        win = check_full_grid(size, grid_game);
         }
+    if(win)
+        printf("CONGRATULATIONS ! You won (gg) ! \n");
+
     }
     return exit;
 }

@@ -18,6 +18,7 @@ int check_equality_columns(int size, int** grid_game);
 int check_duplicate_rows(int size, int** grid_game);
 int check_duplicate_columns(int size, int** grid_game);
 int check_three_same_values(int size, int** grid_game);
+int check_full_grid(int size, int** grid_game);
 int Play();
 /*int validity_move(int **grid, int size, MOVE move);*/
 
