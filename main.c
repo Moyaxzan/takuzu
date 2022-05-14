@@ -44,18 +44,18 @@ int main() {
                                 if(exit)
                                     exit = Play();
                                 break;
+                            }
                         }
+                        /*end case 1*/
                     }
-                /*end case 1*/
             }
-        }
-        char restart_char;
-        printf("do you want to restart (y/n)\n");
-        scanf("%s", &restart_char);
-        if (restart_char == 'n')
-            exit = 0;
-        else
-            exit = 1;
+            char restart_char;
+            printf("do you want to restart (y/n)\n");
+            scanf("%s", &restart_char);
+            if (restart_char == 'n')
+                exit = 0;
+            else
+                exit = 1;
         }
     }
     return 0;
