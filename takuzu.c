@@ -147,7 +147,7 @@ int check_equality_columns(int size, int** grid_game) {
 
 int compare_arrays(int size, int tab1[SIZE_M], int tab2[SIZE_M]) {
     for (int i; i < size; i++) {
-        if (tab1[i]!=tab2[i])
+        if (tab1[i]!=tab2[i] || (tab1[i]==-1 && tab2[i]==-1))
             return 0;
     }
     return 1;
@@ -157,25 +157,27 @@ int compare_arrays(int size, int tab1[SIZE_M], int tab2[SIZE_M]) {
 int check_duplicate_rows(int size, int** grid_game) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
-            printf("%d %d\n", i ,j);
-;            if (compare_arrays(size, grid_game[i], grid_game[j]))
-                printf("The row %d and %d are the sames.\n", i+1, j+1);
+            printf("%d %d ROWS\n", i ,j);
+            if (compare_arrays(size, grid_game[i], grid_game[j])) {
+                printf("The row %d and %d are the sames.\n", i + 1, j + 1);
                 return 0;
+            }
         }
     }
     return 1;
 }
 
 
-
 /* Returns 1 if there are duplicated columns */
+/* TODO : Get columns for this to work */
 int check_duplicate_columns(int size, int** grid_game) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
             printf("%d %d\n", i ,j);
-            if (compare_arrays(size, grid_game[i], grid_game[j]))
-                printf("The column %d and %d are the sames.", i+1, j+1);
+            if (compare_arrays(size, grid_game[i], grid_game[j])) {
+                printf("The column %d and %d are the sames.", i + 1, j + 1);
                 return 0;
+            }
         }
     }
     return 1;
@@ -214,9 +216,9 @@ int check_three_same_values(int size, int** grid_game) {
 }
 
 int verification(int size, int** grid_game) {
-    if (/*check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) &&*/
-        check_duplicate_rows(size, grid_game) && check_duplicate_columns(size, grid_game)/* &&
-        check_three_same_values(size, grid_game)*/)
+    if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) &&
+        check_duplicate_rows(size, grid_game) && /*check_duplicate_columns(size, grid_game) */
+        check_three_same_values(size, grid_game))
         return 1;
     return 0;
 }
