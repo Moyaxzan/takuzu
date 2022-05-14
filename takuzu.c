@@ -147,17 +147,26 @@ int check_equality_columns(int size, int** grid_game) {
 
 int compare_arrays(int size, int tab1[SIZE_M], int tab2[SIZE_M]) {
     for (int i; i < size; i++) {
-        if (tab1[i]!=tab2[i] || (tab1[i]==-1 && tab2[i]==-1))
+        if (tab1[i]!=tab2[i] || tab1[i]==-1 || tab2[i]==-1)
             return 0;
     }
     return 1;
 }
 
-/* Return 1 if there are duplicated rows */
+/* Returns a 1D list containing the column [index] of grid_game */
+int* get_grid_column(int size, int** grid_game, int index) {
+    int* grid_column = malloc(sizeof(int) * size);
+    for (int i = 0; i < size; i++) {
+        grid_column[i]= grid_game[i][index];
+    }
+    return grid_column;
+}
+
+/* Returns 1 if there are duplicated rows */
 int check_duplicate_rows(int size, int** grid_game) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
-            printf("%d %d ROWS\n", i ,j);
+            printf("");
             if (compare_arrays(size, grid_game[i], grid_game[j])) {
                 printf("The row %d and %d are the sames.\n", i + 1, j + 1);
                 return 0;
@@ -169,19 +178,24 @@ int check_duplicate_rows(int size, int** grid_game) {
 
 
 /* Returns 1 if there are duplicated columns */
-/* TODO : Get columns for this to work */
 int check_duplicate_columns(int size, int** grid_game) {
+    int* tab1 = NULL;
+    int* tab2 = NULL;
     for (int i = 0; i < size; i++) {
+        tab1 = get_grid_column(size, grid_game, i);
         for(int j = i+1; j < size; j++) {
-            printf("%d %d\n", i ,j);
-            if (compare_arrays(size, grid_game[i], grid_game[j])) {
-                printf("The column %d and %d are the sames.", i + 1, j + 1);
+            tab2 = get_grid_column(size, grid_game, j);
+            printf("");
+            if (compare_arrays(size, tab1 , tab2)) {
+                printf("The column %d and %d are the sames.\n", i + 1, j + 1);
                 return 0;
             }
         }
     }
     return 1;
 }
+
+
 
 
 
@@ -217,7 +231,7 @@ int check_three_same_values(int size, int** grid_game) {
 
 int verification(int size, int** grid_game) {
     if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) &&
-        check_duplicate_rows(size, grid_game) && /*check_duplicate_columns(size, grid_game) */
+        check_duplicate_rows(size, grid_game) && check_duplicate_columns(size, grid_game) &&
         check_three_same_values(size, grid_game))
         return 1;
     return 0;
