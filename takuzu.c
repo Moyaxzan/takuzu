@@ -1,7 +1,7 @@
 //
 // Created by Moyaxzan on 07/04/2022.
 //
-
+#include <time.h>
 #include "takuzu.h"
 
 /* function that copy the grid in a new grid */
@@ -162,11 +162,10 @@ int* get_grid_column(int size, int** grid_game, int index) {
     return grid_column;
 }
 
-/* Returns 1 if there are duplicated rows */
+/* Return 1 if there are duplicated rows */
 int check_duplicate_rows(int size, int** grid_game) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
-            printf("");
             if (compare_arrays(size, grid_game[i], grid_game[j])) {
                 printf("The row %d and %d are the sames.\n", i + 1, j + 1);
                 return 0;
@@ -178,24 +177,19 @@ int check_duplicate_rows(int size, int** grid_game) {
 
 
 /* Returns 1 if there are duplicated columns */
+/* TODO : Get columns for this to work */
 int check_duplicate_columns(int size, int** grid_game) {
-    int* tab1 = NULL;
-    int* tab2 = NULL;
     for (int i = 0; i < size; i++) {
-        tab1 = get_grid_column(size, grid_game, i);
         for(int j = i+1; j < size; j++) {
-            tab2 = get_grid_column(size, grid_game, j);
-            printf("");
-            if (compare_arrays(size, tab1 , tab2)) {
-                printf("The column %d and %d are the sames.\n", i + 1, j + 1);
+            printf("%d %d\n", i ,j);
+            if (compare_arrays(size, grid_game[i], grid_game[j])) {
+                printf("The column %d and %d are the sames.", i + 1, j + 1);
                 return 0;
             }
         }
     }
     return 1;
 }
-
-
 
 
 
@@ -231,7 +225,7 @@ int check_three_same_values(int size, int** grid_game) {
 
 int verification(int size, int** grid_game) {
     if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) &&
-        check_duplicate_rows(size, grid_game) && check_duplicate_columns(size, grid_game) &&
+        check_duplicate_rows(size, grid_game) && /*check_duplicate_columns(size, grid_game) */
         check_three_same_values(size, grid_game))
         return 1;
     return 0;
@@ -340,8 +334,96 @@ int Play() {
     return exit;
 }
 
-/*
-int validity_move(GRID grid,MOVE move){
 
-}*/
+
+
+int** initialize_grid(int size){
+    srand(time(NULL));
+    int random_val, valid = 0;
+    int** grid = malloc(sizeof(int *) * 8);
+    grid[1] = malloc(sizeof(int) * 4);
+    grid[2] = malloc(sizeof(int) * 4);
+    grid[3] = malloc(sizeof(int) * 4);
+    grid[4] = malloc(sizeof(int) * 4);
+    if(size == 4){
+        int possibilities[100][4] = {
+                {0, 0, 1, 1},
+                {0, 1, 0, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 0},
+                {1, 0, 0, 1},
+                {0, 1, 1, 0}};
+        for (int i = 0; i < 4; i++){
+            while(!valid) {
+                random_val = rand() % size;
+                for (int j = 0; j < 4; j++) {
+                    grid[i][j] = possibilities[random_val][j];
+                }
+                if (check_equality_columns(size, grid) && check_three_same_values()) {
+                    valid = 1;
+                }
+            }
+            valid = 0;
+        }
+    } else {
+        int possibilities[30][8] = {
+
+                {0, 0, 1, 0, 1, 0, 1, 1},
+                {0, 0, 1, 0, 1, 1, 0, 1},
+                {0, 0, 1, 1, 0, 0, 1, 1},
+                {0, 0, 1, 1, 0, 1, 0, 1},
+                {0, 0, 1, 1, 0, 1, 1, 0},
+
+                {0, 1, 0, 0, 1, 1, 0, 1},
+                {0, 1, 0, 0, 1, 0, 1, 1},
+                {0, 1, 0, 1, 0, 1, 0, 1},
+                {0, 1, 0, 1, 1, 0, 0, 1},
+                {0, 1, 0, 1, 1, 0, 1, 0},
+
+                {0, 1, 1, 0, 0, 1, 0, 1},
+                {0, 1, 1, 0, 0, 1, 1, 0},
+                {0, 1, 1, 0, 1, 0, 0, 1},
+                {0, 1, 1, 0, 1, 0, 1, 0},
+                {0, 1, 1, 0, 1, 1, 0, 0},
+
+                {1, 0, 0, 1, 0, 0, 1, 1},
+                {1, 0, 0, 1, 0, 1, 0, 1},
+                {1, 0, 0, 1, 0, 1, 1, 0},
+                {1, 0, 0, 1, 1, 0, 0, 1},
+                {1, 0, 0, 1, 1, 0, 1, 0},
+
+                {1, 0, 1, 0, 0, 1, 0, 1},
+                {1, 0, 1, 0, 0, 1, 1, 0},
+                {1, 0, 1, 0, 1, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 1, 0, 0},
+
+                {1, 1, 0, 0, 1, 0, 0, 1},
+                {1, 1, 0, 0, 1, 0, 1, 0},
+                {1, 1, 0, 0, 1, 1, 0, 0},
+                {1, 1, 0, 1, 0, 0, 1, 0},
+                {1, 1, 0, 1, 0, 1, 0, 0},
+
+
+
+        };
+        for (int i = 0; i < size; i++){
+            while(!valid) {
+                random_val = rand() % size;
+                for (int j = 0; j < size; j++) {
+                    grid[i][j] = possibilities[random_val][j];
+                }
+                if (check_equality_columns(size, grid) && check_three_same_values(size, grid)) {
+                    valid = 1;
+                }
+                if (!valid) {
+                    for (int j = 0; j < 4; j++) {
+                        grid[i][j] = 0;
+                    }
+                }
+            }
+            valid = 0;
+        }
+    }
+}
 

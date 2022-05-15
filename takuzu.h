@@ -21,6 +21,7 @@ int check_three_same_values(int size, int** grid_game);
 int check_full_grid(int size, int** grid_game);
 int* get_grid_column(int size, int** grid_game, int index);
 int Play();
+int** initialize_grid(int size);
 /*int validity_move(int **grid, int size, MOVE move);*/
 
 #endif //TAKUZU_TAKUZU_H
