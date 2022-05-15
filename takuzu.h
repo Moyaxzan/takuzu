@@ -12,7 +12,7 @@
 int** create_grid(int size);
 void display_grid(int size,int** grid_game);
 int** get_grid_game(int size, int** solution_grid, int** mask_grid);
-int** create_random_mask(int size);
+int** create_random_mask(int size, int** solution_grid);
 int verification(int size, int** grid_game);
 int half_filled_array(int size, int tab[SIZE_M]);
 int half_filled_column(int size, int** grid_game, int index);

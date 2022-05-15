@@ -320,7 +320,7 @@ int get_clues(int size, int** grid_game, int display) {
                     if (display)
                         printf("We can put a %d at row %d column %d since there is two %d to its right\n",
                            (grid_game[i][j] + 1) % 2, i + 1, j + 1, grid_game[i][j+1]);
-                    grid_game[i][j] = (grid_game[i][j] + 1) % 2;
+                    grid_game[i][j] = (grid_game[i][j+1] + 1) % 2;
                     return 1; }
         }
     }
@@ -449,10 +449,8 @@ int** initialize_grid(int size, int display){
     return grid;
 }
 
-int** create_random_mask(int size) {
-    srand(time(NULL));
+int** create_random_mask(int size, int** solution_grid) {
     int **mask_grid = create_grid(size);
-    int **solution_grid = NULL;
     int **grid_game = NULL;
     if (size == 4) {
         int cpt = 8;
@@ -479,16 +477,11 @@ int** create_random_mask(int size) {
                 }
             }
     }
-    solution_grid = initialize_grid(size, 0);
     grid_game = get_grid_game(size, solution_grid, mask_grid);
     while (!check_full_grid(size, grid_game)) {
-        printf("%d %d\n", get_clues(size, grid_game, 0), check_full_grid(size, grid_game));
         if (!get_clues(size, grid_game, 0))
-            return create_random_mask(size);
+            return create_random_mask(size, solution_grid);
     }
-    printf("AAAAAAAAAAAAAAAAAAAAAAAA %d\n", check_full_grid(size, grid_game));
-    display_grid(size, grid_game);
-    printf("oéoééoéooéoé");
     return mask_grid;
 }
 
@@ -497,13 +490,12 @@ int Auto_complete(int size) {
     int** mask_grid = NULL;
     int** grid_game = NULL;
     solution_grid = initialize_grid(size, 0);
-    mask_grid = create_random_mask(size);
+    mask_grid = create_random_mask(size, solution_grid);
     grid_game = get_grid_game(size, solution_grid, mask_grid);
     while (!check_full_grid(size, grid_game)) {
         display_grid(size, grid_game);
         get_clues(size, grid_game, 1);
         printf("\n");
-        sleep(2);
     }
     display_grid(size, grid_game);
     printf("oeoe gg\n");
@@ -519,7 +511,7 @@ int Play(int size) {
         exit = 0;
     } else {
         solution_grid = initialize_grid(size, 0);
-        mask_grid = create_random_mask(size);
+        mask_grid = create_random_mask(size, solution_grid);
         grid_game = get_grid_game(size, solution_grid, mask_grid);
         display_grid(size, grid_game);
         while(exit && !win && player_lifes > 0) {
