@@ -9,6 +9,7 @@
 int main() {
     int exit = 1;
     int ** grid = NULL;
+    int size;
     while (exit){
         int size, choice1, choice2, position_x, position_y, value;
         printf("What do you want to do :\n");
@@ -24,6 +25,16 @@ int main() {
         if (choice1 != -1){
             switch (choice1) {
                 case 1:{
+                    printf("what size do you want ? (4 or 8)\n");
+                    scanf("%d", &size);
+                    if (size == -1)
+                        exit = 0;
+                    while (size != 4 && size != 8 && exit){
+                        printf("wrong size, try again\n");
+                        scanf("%d", &size);
+                        if (size == -1)
+                            exit = 0;
+                    }
                     printf("(1) Enter a mask manually \n(2) Automatically generate a mask \n(3) Play\n");
                     scanf("%d", &choice2);
                     if (choice2 == -1) {
@@ -45,7 +56,7 @@ int main() {
                             }
                             case 3: {
                                 if (exit)
-                                    exit = Play();
+                                    exit = Play(size);
                                 break;
                             }
                         }
@@ -54,6 +65,17 @@ int main() {
                     break;
                 }
                 case 2:{
+                    printf("what size you want ? (4 or 8)\n");
+                    scanf("%d", &size);
+                    if (size == -1)
+                        exit = 0;
+                    while (size != 4 && size != 8 && exit){
+                        printf("wrong size, try again\n");
+                        scanf("%d", &size);
+                        if (size == -1)
+                            exit = 0;
+                    }
+                    Auto_complete(size);
                     break;
                 }
                 case 3:{
@@ -100,3 +122,4 @@ int main() {
     }
     return 0;
 }
+
