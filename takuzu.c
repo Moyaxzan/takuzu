@@ -335,10 +335,8 @@ int get_clues(int size, int** grid_game, int display) {
 
 int** initialize_grid(int size, int display){
     srand(time(NULL));
-
     int random_val, valid = 0, cpt_rand;
     int** grid = create_grid(size);
-
     if(size == 4){
         int possibilities[6][4] = {
                 {0, 0, 1, 1},
@@ -498,7 +496,10 @@ int Auto_complete(int size) {
         printf("\n");
     }
     display_grid(size, grid_game);
-    printf("oeoe gg\n");
+    printf(":)\n\n");
+    free(solution_grid);
+    free(mask_grid);
+    free(grid_game);
 }
 
 int Play(int size) {
@@ -518,7 +519,6 @@ int Play(int size) {
             invalid_index = 1;
             while (invalid_index){
                 printf("Write a position in which you want to play\n");
-
                 printf("Enter the row index (Between 1 and %d)\n", size);
                 scanf("%d", &position_x);
                 if (position_x == -1) {
@@ -545,7 +545,6 @@ int Play(int size) {
 
                     if (grid_game[position_x-1][position_y-1] == -1 && exit)
                         invalid_index = 0;
-                    invalid_index = 0;
                     if (invalid_index)
                         printf("invalid input : case already filled.\n\n");
                 }
@@ -565,7 +564,7 @@ int Play(int size) {
                 not_tested_grid = copy_grid(size, grid_game);
                 not_tested_grid[position_x - 1][position_y - 1] = value;
                 if(verification(size, not_tested_grid)){
-                    if (grid_game[position_x-1][position_y] == value)
+                    if (solution_grid[position_x-1][position_y-1] == value)
                         grid_game[position_x-1][position_y-1] = value;
                     else
                         printf("Valid move but incorrect");
@@ -578,9 +577,12 @@ int Play(int size) {
             win = check_full_grid(size, grid_game);
         }
         if(win)
-            printf("CONGRATULATIONS ! You won (gg) ! \n");
-        else if (player_lifes < 0)
-            printf("Sadge");
+            printf("GG, you won !\n");
+        else if (player_lifes == 0)
+            printf("You lost.\n\n");
+        free(solution_grid);
+        free(mask_grid);
+        free(grid_game);
     }
     return exit;
 }

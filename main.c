@@ -90,7 +90,7 @@ int main() {
                             scanf("%d", &size);
                         }
                     }
-                    printf("What do you want :\n- (1) Display the grid\n- (2) display the grid and all the steps\n");
+                    printf("What do you want :\n- (1) Display the grid\n- (2) Display the grid and all the steps\n");
                     scanf("%d", &choice2);
                     while (choice2 != 1 && choice2 != 2 && choice2 != -1) {
                         printf("Please enter a valid choice\n");
@@ -112,7 +112,7 @@ int main() {
                 }
             }
             char restart_char;
-            printf("do you want to restart (y/n)\n");
+            printf("Do you want to restart ? (y/n)\n");
             scanf("%s", &restart_char);
             if (restart_char == 'n')
                 exit = 0;
@@ -120,6 +120,7 @@ int main() {
                 exit = 1;
         }
     }
+    free(grid);
     return 0;
 }
 
