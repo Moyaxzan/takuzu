@@ -9,18 +9,17 @@
 int main() {
     int exit = 1;
     int ** grid = NULL;
-    int size;
     while (exit){
-        int size, choice1, choice2, position_x, position_y, value;
+        int size,  choice1, choice2, position_x, position_y, value;
         printf("What do you want to do :\n");
         printf("(1) Solve the grid \n(2) Solve automatically \n(3) Generate takuzu grid\n");
         scanf("%d", &choice1);
-        if (choice1 == -1){
-            exit = 0;
-        }
         while (choice1 != 1 && choice1 != 2 && choice1 != 3 && choice1 != -1){
             printf("Please enter a valid choice\n");
             scanf("%d", &choice1);
+        }
+        if (choice1 == -1){
+            exit = 0;
         }
         if (choice1 != -1){
             switch (choice1) {
@@ -35,7 +34,7 @@ int main() {
                         if (size == -1)
                             exit = 0;
                     }
-                    printf("(1) Enter a mask manually \n(2) Automatically generate a mask \n(3) Play\n");
+                    printf("(1) Enter a mask manually \n(2) Play\n");
                     scanf("%d", &choice2);
                     if (choice2 == -1) {
                         exit = 0;
@@ -49,14 +48,30 @@ int main() {
                     } else {
                         switch (choice2) {
                             case 1: {
+                                int val;
+                                int ** mask = create_grid(size);
+                                for (int i = 0; i < size; i++) {
+                                    for(int j = 0; j < size; j++){
+                                        printf("Enter the value of the cell %d,%d (0 to mask and 1 to display):\n", i+1, j+1);
+                                        scanf("%d", &val);
+                                        while (val != 0 && val != 1 && val != -1) {
+                                            printf("Please enter a valid choice\n");
+                                            scanf("%d", &val);
+                                        }
+
+                                        mask[i][j] = val;
+                                        if(mask[i][j] == -1)
+                                            exit = 0;
+                                        display_grid(size, mask);
+                                    }
+                                }
+                                exit = Play(size, mask);
+
                                 break;
                             }
                             case 2: {
-                                break;
-                            }
-                            case 3: {
                                 if (exit)
-                                    exit = Play(size);
+                                    exit = Play(size, NULL);
                                 break;
                             }
                         }

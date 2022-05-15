@@ -335,8 +335,10 @@ int get_clues(int size, int** grid_game, int display) {
 
 int** initialize_grid(int size, int display){
     srand(time(NULL));
+
     int random_val, valid = 0, cpt_rand;
     int** grid = create_grid(size);
+
     if(size == 4){
         int possibilities[6][4] = {
                 {0, 0, 1, 1},
@@ -494,6 +496,7 @@ int Auto_complete(int size) {
         display_grid(size, grid_game);
         get_clues(size, grid_game, 1);
         printf("\n");
+        sleep(3.5);
     }
     display_grid(size, grid_game);
     printf(":)\n\n");
@@ -502,7 +505,7 @@ int Auto_complete(int size) {
     free(grid_game);
 }
 
-int Play(int size) {
+int Play(int size, int** mask) {
     int exit = 1, position_x, position_y, value, invalid_index = 1, win = 0, player_lifes = 3;
     int** not_tested_grid = NULL;
     int** solution_grid = NULL;
@@ -512,7 +515,11 @@ int Play(int size) {
         exit = 0;
     } else {
         solution_grid = initialize_grid(size, 0);
-        mask_grid = create_random_mask(size, solution_grid);
+        if(mask == NULL) {
+            mask_grid = create_random_mask(size, solution_grid);
+        } else {
+            mask_grid = mask;
+        }
         grid_game = get_grid_game(size, solution_grid, mask_grid);
         display_grid(size, grid_game);
         while(exit && !win && player_lifes > 0) {

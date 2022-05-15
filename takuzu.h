@@ -25,7 +25,7 @@ int check_three_same_values(int size, int** grid_game, int display);
 int check_full_grid(int size, int** grid_game);
 int* get_grid_column(int size, int** grid_game, int index);
 int get_clues(int size, int** grid_game, int display);
-int Play(int size);
+int Play(int size, int** mask);
 int** initialize_grid(int size, int display);
 /*int validity_move(int **grid, int size, MOVE move);*/
 
