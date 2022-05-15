@@ -8,6 +8,7 @@
 
 int main() {
     int exit = 1;
+    int ** grid = NULL;
     while (exit){
         int size, choice1, choice2, position_x, position_y, value;
         printf("What do you want to do :\n");
@@ -22,7 +23,7 @@ int main() {
         }
         if (choice1 != -1){
             switch (choice1) {
-                case 1:
+                case 1:{
                     printf("(1) Enter a mask manually \n(2) Automatically generate a mask \n(3) Play\n");
                     scanf("%d", &choice2);
                     if (choice2 == -1) {
@@ -34,20 +35,45 @@ int main() {
                     }
                     if (choice2 == -1) {
                         exit = 0;
-                    }else{
+                    } else {
                         switch (choice2) {
                             case 1: {
-                                break; }
+                                break;
+                            }
                             case 2: {
-                                break; }
+                                break;
+                            }
                             case 3: {
-                                if(exit)
+                                if (exit)
                                     exit = Play();
                                 break;
                             }
                         }
                         /*end case 1*/
                     }
+                    break;
+                }
+                case 2:{
+                    break;
+                }
+                case 3:{
+                    printf("Enter the size of the grid :\n");
+                    scanf("%d", &size);
+
+                    while ((size != 4 && size != 8 && size != -1) && exit) {
+                        if(size == -1){
+                            exit = 0;
+                        } else {
+                            printf("Please enter a valid size\n");
+                            scanf("%d", &size);
+                        }
+                    }
+
+                    grid = initialize_grid(size);
+                    display_grid(size, grid);
+
+                    break;
+                }
             }
             char restart_char;
             printf("do you want to restart (y/n)\n");
