@@ -68,10 +68,24 @@ int main() {
                             scanf("%d", &size);
                         }
                     }
-
-                    grid = initialize_grid(size);
-                    display_grid(size, grid);
-
+                    printf("What do you want :\n- (1) Display the grid\n- (2) display the grid and all the steps\n");
+                    scanf("%d", &choice2);
+                    while (choice2 != 1 && choice2 != 2 && choice2 != -1) {
+                        printf("Please enter a valid choice\n");
+                        scanf("%d", &choice2);
+                    }
+                    if (choice2 == -1) {
+                        exit = 0;
+                    }
+                    if(exit){
+                        if(choice2 == 1) {
+                            grid = initialize_grid(size, 0);
+                            display_grid(size, grid);
+                        } else {
+                            grid = initialize_grid(size, 1);
+                            printf("\n");
+                        }
+                    }
                     break;
                 }
             }

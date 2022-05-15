@@ -30,6 +30,7 @@ int** create_grid(int size) {
 
 
 void display_grid(int size, int** grid_game){
+    printf("\n");
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
             if(grid_game[i][j] != -1){
@@ -40,6 +41,7 @@ void display_grid(int size, int** grid_game){
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 
@@ -122,7 +124,7 @@ int check_equality_rows(int size, int** grid_game) {
     return 1;
 }
 
-int check_equality_columns(int size, int** grid_game) {
+int check_equality_columns(int size, int** grid_game, int display) {
     int count_zero, count_one;
     for(int i = 0; i < size; i++){
         count_zero = 0;
@@ -134,10 +136,12 @@ int check_equality_columns(int size, int** grid_game) {
                 count_zero += 1;
         }
         if (count_one > size/2) {
-            printf("Be careful ! There is too much 1's on the column %d\n", i+1);
+            if(display)
+                printf("There is too much 1's on the column %d\n\n", i+1);
             return 0;
         }else if(count_zero > size/2){
-            printf("Be careful ! There is too much 0's on the column %d\n", i+1);
+            if(display)
+                printf("There is too much 0's on the column %d\n\n", i+1);
             return 0;
         }
     }
@@ -146,7 +150,7 @@ int check_equality_columns(int size, int** grid_game) {
 
 
 int compare_arrays(int size, int tab1[SIZE_M], int tab2[SIZE_M]) {
-    for (int i; i < size; i++) {
+    for (int i = 0; i < size; i++) {
         if (tab1[i]!=tab2[i] || tab1[i]==-1 || tab2[i]==-1)
             return 0;
     }
@@ -163,11 +167,12 @@ int* get_grid_column(int size, int** grid_game, int index) {
 }
 
 /* Return 1 if there are duplicated rows */
-int check_duplicate_rows(int size, int** grid_game) {
+int check_duplicate_rows(int size, int** grid_game, int display) {
     for (int i = 0; i < size; i++) {
         for(int j = i+1; j < size; j++) {
             if (compare_arrays(size, grid_game[i], grid_game[j])) {
-                printf("The row %d and %d are the sames.\n", i + 1, j + 1);
+                if(display)
+                    printf("The row %d and %d are the sames.\n\n", i + 1, j + 1);
                 return 0;
             }
         }
@@ -177,13 +182,17 @@ int check_duplicate_rows(int size, int** grid_game) {
 
 
 /* Returns 1 if there are duplicated columns */
-/* TODO : Get columns for this to work */
-int check_duplicate_columns(int size, int** grid_game) {
+int check_duplicate_columns(int size, int** grid_game, int display) {
+    int* tab1 = NULL;
+    int* tab2 = NULL;
     for (int i = 0; i < size; i++) {
+        tab1 = get_grid_column(size, grid_game, i);
         for(int j = i+1; j < size; j++) {
-            printf("%d %d\n", i ,j);
-            if (compare_arrays(size, grid_game[i], grid_game[j])) {
-                printf("The column %d and %d are the sames.", i + 1, j + 1);
+            tab2 = get_grid_column(size, grid_game, j);
+            printf("");
+            if (compare_arrays(size, tab1 , tab2)) {
+                if(display)
+                    printf("The column %d and %d are the sames.\n\n", i + 1, j + 1);
                 return 0;
             }
         }
@@ -193,13 +202,14 @@ int check_duplicate_columns(int size, int** grid_game) {
 
 
 
-int check_three_same_values(int size, int** grid_game) {
+int check_three_same_values(int size, int** grid_game, int display) {
     for (int i = 0; i < size-2; i++) {
         for (int j = 0; j < size; j++) {
             if (grid_game[i][j] != -1) {
                 if (grid_game[i + 1][j] == grid_game[i][j]) {
                     if (grid_game[i + 2][j] == grid_game[i][j]) {
-                        printf("There are 3 same values in a row in the column %d\n", j + 1);
+                        if(display)
+                            printf("There are 3 same values in a row in the column %d\n\n", j + 1);
                         return 0;
                     }
                 }
@@ -211,7 +221,8 @@ int check_three_same_values(int size, int** grid_game) {
             if (grid_game[i][j] != -1) {
                 if (grid_game[i][j + 1] == grid_game[i][j]) {
                     if (grid_game[i][j + 2] == (grid_game[i][j])) {
-                        printf("There are 3 same values in a row in the row %d\n", i + 1);
+                        if(display)
+                            printf("There are 3 same values in a row in the row %d\n\n", i + 1);
                         return 0;
                     }
                 }
@@ -224,9 +235,9 @@ int check_three_same_values(int size, int** grid_game) {
 }
 
 int verification(int size, int** grid_game) {
-    if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game) &&
-        check_duplicate_rows(size, grid_game) && /*check_duplicate_columns(size, grid_game) */
-        check_three_same_values(size, grid_game))
+    if (check_equality_rows(size, grid_game) && check_equality_columns(size, grid_game, 1) &&
+        check_duplicate_rows(size, grid_game, 1) && check_duplicate_columns(size, grid_game, 1) &&
+        check_three_same_values(size, grid_game, 1))
         return 1;
     return 0;
 }
@@ -336,32 +347,52 @@ int Play() {
 
 
 
-int** initialize_grid(int size){
+int** initialize_grid(int size, int display){
     srand(time(NULL));
 
     int random_val, valid = 0, cpt_rand;
     int** grid = create_grid(size);
 
     if(size == 4){
-        int possibilities[100][4] = {
+        int possibilities[6][4] = {
                 {0, 0, 1, 1},
                 {0, 1, 0, 1},
                 {1, 0, 1, 0},
                 {1, 1, 0, 0},
                 {1, 0, 0, 1},
                 {0, 1, 1, 0}};
-        for (int i = 0; i < 4; i++){
-            while(!valid) {
-                random_val = rand() % 5;
-                for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < size; i++){
+            cpt_rand = 0;
+            valid = 0;
+            while(!valid && cpt_rand != 10){
+                random_val = rand() % 6;
+                for (int j = 0; j < size; j++) {
                     grid[i][j] = possibilities[random_val][j];
                 }
-                if (check_equality_columns(size, grid) && check_three_same_values(size, grid)){
+
+                if(display)
+                    display_grid(size, grid);
+
+                if (check_equality_columns(size, grid, display) &&
+                    check_three_same_values(size, grid, display) &&
+                    check_duplicate_rows(size, grid, display) &&
+                    check_duplicate_columns(size, grid, display)) {
                     valid = 1;
                 }
+
+                if (!valid) {
+                    for (int j = 0; j < size; j++) {
+                        grid[i][j] = -1;
+                    }
+                    cpt_rand ++;
+                }
+                if(cpt_rand == 10){
+                    grid = create_grid(size);
+                    i = -1;
+                }
             }
-            valid = 0;
         }
+
     } else {
         int possibilities[30][8] = {
                 {0, 0, 1, 0, 1, 0, 1, 1},
@@ -393,11 +424,7 @@ int** initialize_grid(int size){
                 {1, 1, 0, 0, 1, 0, 1, 0},
                 {1, 1, 0, 0, 1, 1, 0, 0},
                 {1, 1, 0, 1, 0, 0, 1, 0},
-                {1, 1, 0, 1, 0, 1, 0, 0},
-
-
-
-        };
+                {1, 1, 0, 1, 0, 1, 0, 0}};
         for (int i = 0; i < size; i++){
             cpt_rand = 0;
             valid = 0;
@@ -406,25 +433,26 @@ int** initialize_grid(int size){
                 for (int j = 0; j < size; j++) {
                     grid[i][j] = possibilities[random_val][j];
                 }
-                display_grid(size, grid);
-                if (check_equality_columns(size, grid) && check_three_same_values(size, grid)) {
-                    printf("eq column %d", check_equality_columns(size, grid));
-                    printf("check 3 same val %d", check_three_same_values(size, grid));
+                if(display)
+                    display_grid(size, grid);
+
+                if (check_equality_columns(size, grid, display) &&
+                    check_three_same_values(size, grid, display) &&
+                    check_duplicate_rows(size, grid, display) &&
+                    check_duplicate_columns(size, grid, display)) {
                     valid = 1;
                 }
 
                 if (!valid) {
-                    for (int j = 0; j < 4; j++) {
+                    for (int j = 0; j < size; j++) {
                         grid[i][j] = -1;
-                   }
-                cpt_rand ++;
+                    }
+                    cpt_rand ++;
                 }
                 if(cpt_rand == 10){
                     grid = create_grid(size);
                     i = -1;
                 }
-                printf("valid = %d\n", valid);
-                printf("cpt_rand : %d\n\n\n", cpt_rand);
             }
         }
     }
