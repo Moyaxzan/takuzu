@@ -3,6 +3,7 @@
 //
 #include <time.h>
 #include "takuzu.h"
+#include <unistd.h>
 
 /* function that copy the grid in a new grid */
 int** copy_grid(int size, int** grid) {
@@ -370,8 +371,10 @@ int** initialize_grid(int size, int display){
                     grid[i][j] = possibilities[random_val][j];
                 }
 
-                if(display)
+                if(display){
                     display_grid(size, grid);
+                    sleep(3);
+                }
 
                 if (check_equality_columns(size, grid, display) &&
                     check_three_same_values(size, grid, display) &&
@@ -433,8 +436,10 @@ int** initialize_grid(int size, int display){
                 for (int j = 0; j < size; j++) {
                     grid[i][j] = possibilities[random_val][j];
                 }
-                if(display)
+                if(display){
                     display_grid(size, grid);
+                    sleep(2);
+                }
 
                 if (check_equality_columns(size, grid, display) &&
                     check_three_same_values(size, grid, display) &&
