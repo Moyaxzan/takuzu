@@ -10,7 +10,7 @@ int main() {
     int exit = 1;
     int ** grid = NULL;
     while (exit){
-        int size,  choice1, choice2, position_x, position_y, value;
+        int size,  choice1, choice2;
         printf("What do you want to do :\n");
         printf("(1) Solve the grid \n(2) Solve automatically \n(3) Generate takuzu grid\n");
         scanf("%d", &choice1);

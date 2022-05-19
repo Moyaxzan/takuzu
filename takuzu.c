@@ -577,7 +577,8 @@ int Play(int size, int** mask) {
                         printf("Valid move but incorrect");
                 } else {
                     player_lifes -= 1;
-                    printf("You lost a life ! You have %d remaining.", player_lifes);
+                    printf("You lost a life ! You have %d remaining.\nTip : ", player_lifes);
+                    get_clues(size, grid_game, 1);
                 }
                 display_grid(size, grid_game);
             }
